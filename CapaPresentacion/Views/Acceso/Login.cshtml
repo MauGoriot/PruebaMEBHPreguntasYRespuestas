@@ -1,0 +1,132 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+    <title>Login</title>
+
+    <!-- General CSS Files -->
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- CSS Libraries -->
+    <link href="~/Content/bootstrap-social.css" rel="stylesheet" />
+
+    <!-- Template CSS -->
+    <link href="~/Content/css/components.css" rel="stylesheet" />
+    <link href="~/Content/css/style.css" rel="stylesheet" />
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Start GA -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-94034622-3"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-94034622-3');
+    </script>
+    <!-- /END GA -->
+</head>
+
+<body>
+    <div id="app">
+        <section class="section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4">
+                        <div class="login-brand">
+                            <img src="https://th.bing.com/th/id/OIP.lHODn--mT4Rb0ctgPd29cwHaHa?rs=1&pid=ImgDetMain" alt="logo" width="100" class="shadow-light rounded-circle">
+                        </div>
+
+                        <div class="card card-primary">
+                            <div class="card-header">
+                                <h4>Inicio</h4>
+                            </div>
+                            <div class="card-body">
+                                <form action="@Url.Action("Login", "Acceso")" method="post" class="needs-validation" novalidate="">
+                                    <div class="form-group">
+                                        <label for="Usuario">Usuario</label>
+                                        <input id="NombreUsuario" type="text" class="form-control" name="NombreUsuario" tabindex="1" required autofocus autocomplete="username">
+                                        <div class="invalid-feedback">
+                                            Por favor ingresa el nombre de usuario
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="password">Contraseña</label>
+                                        <input id="password" type="password" class="form-control" name="Clave" tabindex="2" required autocomplete="current-password">
+                                        <div class="invalid-feedback">
+                                            Por favor ingresa la contraseña
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary btn-lg btn-block" tabindex="4">
+                                            Iniciar sesión
+                                        </button>
+                                    </div>
+                                </form>
+                                <div class="text-muted text-center">
+                                    No tienes una cuenta? <a href="@Url.Action("Registrar", "Acceso")">Regístrate</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="simple-footer">
+                            Copyright &copy; BAC 2024
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- General JS Scripts -->
+    <script src="~/Content/js/jquery.min.js"></script>
+    <script src="~/Content/js/popper.js"></script>
+    <script src="~/Content/js/tooltip.js"></script>
+    <script src="~/Content/js/bootstrap.min.js"></script>
+    <script src="~/Content/js/jquery.nicescroll.min.js"></script>
+    <script src="~/Content/js/moment.min.js"></script>
+    <script src="~/Content/js/stisla.js"></script>
+
+    <!-- Template JS File -->
+    <script src="~/Content/js/scripts.js"></script>
+    <script src="~/Content/js/custom.js"></script>
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @if (ViewData["Mensaje"] != null)
+    {
+        <script>
+Swal.fire({
+    icon: '@(ViewData["TipoMensaje"] == "success" ? "success" : "error")',
+    title: '@(ViewData["TipoMensaje"] == "success" ? "Éxito" : "Error")',
+    text: '@ViewData["Mensaje"]',
+    showConfirmButton: false,
+    timer: 5000
+});
+
+        </script>
+    }
+    else if (TempData["Mensaje"] != null)
+    {
+        <script>
+Swal.fire({
+    icon: '@(TempData["TipoMensaje"] == "success" ? "success" : "error")',
+    title: '@(TempData["TipoMensaje"] == "success" ? "Éxito" : "Error")',
+    text: '@TempData["Mensaje"]',
+    showConfirmButton: false,
+    timer: 5000
+});
+        </script>
+    }
+</body>
+
+</html>

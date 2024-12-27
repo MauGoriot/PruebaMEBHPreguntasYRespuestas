@@ -1,0 +1,61 @@
+﻿@{
+    ViewBag.Title = "Responder";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model CapaPresentacion.Models.PreguntaRespuesta
+<main class="mt-5">
+    <div class="container">
+        <section class="pregunta mb-4">
+            <div class="card shadow-lg rounded">
+                <div class="card-body">
+                    <h3 class="card-title text">@Model.Pregunta.Titulo</h3>
+                    <p class="text-muted">
+                        <i class="bi bi-person-circle"></i> Publicado por: <strong>@Model.Pregunta.Usuario.NombreUsuario</strong> -
+                        <span>@Model.Pregunta.FechaCreacion.ToString("dd 'de' MMMM 'de' yyyy h:mm tt")</span>
+                    </p>
+                </div>
+            </div>
+        </section>
+        <section class="respuesta-nueva my-4">
+            <h4 class="navbar-brand">Agregar una Respuesta</h4>
+            <form method="post" action="@Url.Action("GuardarRespuesta", "Respuesta")" @(Model.Pregunta.Estado ? "" : "disabled")>
+                <input type="hidden" name="PreguntaID" value="@Model.Pregunta.PreguntaID" />
+                <div class="mb-3">
+                    <textarea id="contenido" class="form-control" rows="4" name="Contenido" placeholder="Escribe tu respuesta aquí..." required
+                              @(Model.Pregunta.Estado ? "" : "disabled")></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary"
+                        @(Model.Pregunta.Estado ? "" : "disabled")>
+                    Enviar Respuesta
+                </button>
+            </form>
+        </section>
+        <section class="respuestas">
+            <h4 class="mb-4 ">Respuestas:</h4>
+            @foreach (var respuesta in Model.Respuestas)
+            {
+                <div class="card mb-4 shadow-sm rounded">
+                    <div class="card-body">
+                        <p class="text-muted">
+                            <i class="bi bi-person-circle"></i> Respuesta de <strong>@respuesta.Usuario.NombreUsuario</strong> -
+                            <span>@respuesta.FechaCreacion.ToString("dd 'de' MMMM 'de' yyyy h:mm tt")</span>
+                        </p>
+                        <p>@respuesta.Contenido</p>
+                    </div>
+                </div>
+            }
+        </section>
+    </div>
+    @if (TempData["Mensaje"] != null)
+    {
+        <script>
+ Swal.fire({
+     icon: '@(TempData["TipoMensaje"] == "success" ? "success" : "error")',
+     title: '@(TempData["TipoMensaje"] == "success" ? "Éxito" : "Error")',
+     text: '@TempData["Mensaje"]',
+     showConfirmButton: false,
+     timer: 5000
+ });
+        </script>
+    }
+</main>

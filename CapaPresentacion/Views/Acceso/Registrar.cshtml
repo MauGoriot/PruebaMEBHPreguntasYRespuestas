@@ -1,0 +1,127 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+    <title>Register </title>
+
+    <!-- General CSS Files -->
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/css/all.min.css" rel="stylesheet" />
+
+    <!-- CSS Libraries -->
+    <link href="~/Content/css/selectric.css" rel="stylesheet" />
+
+    <!-- Template CSS -->
+    <link href="~/Content/css/style.css" rel="stylesheet" />
+    <link href="~/Content/css/components.css" rel="stylesheet" />
+
+    <!-- SweetAlert2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Start GA -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-94034622-3"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-94034622-3');
+    </script>
+    <!-- /END GA -->
+</head>
+
+<body>
+    <div id="app">
+        <section class="section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-8 offset-lg-2 col-xl-8 offset-xl-2">
+                        <div class="login-brand">
+                            <img src="https://th.bing.com/th/id/OIP.lHODn--mT4Rb0ctgPd29cwHaHa?rs=1&pid=ImgDetMain" alt="logo" width="100" class="shadow-light rounded-circle">
+                        </div>
+
+                        <div class="card card-primary">
+                            <div class="card-header"><h4>Registrarse</h4></div>
+                            <div class="card-body">
+                                <form method="POST">
+                                    <div class="row">
+                                        <div class="form-group col-12">
+                                            <label for="NombreUsuario">Nombre de Usuario</label>
+                                            <input id="NombreUsuario" type="text" class="form-control" name="NombreUsuario" autofocus required>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="form-group col-12">
+                                            <label for="password" class="d-block">Contraseña</label>
+                                            <input id="password" type="password" class="form-control pwstrength" data-indicator="pwindicator" name="Clave" autocomplete="new-password">
+                                            <div id="pwindicator" class="pwindicator">
+                                                <div class="bar"></div>
+                                                <div class="label"></div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-12">
+                                            <label for="password2" class="d-block">Confirmar Contraseña</label>
+                                            <input id="password2" type="password" class="form-control" name="ConfirmarClave" autocomplete="new-password">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary btn-lg btn-block">
+                                            Registrarse
+                                        </button>
+                                        <a href="@Url.Action("Login", "Acceso")" class="btn btn-primary btn-lg btn-block">
+                                            Regresar al Login
+                                        </a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="simple-footer">
+                            Copyright &copy; BAC 2024
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- General JS Scripts -->
+    <script src="~/Content/js/jquery.min.js"></script>
+    <script src="~/Content/js/popper.js"></script>
+    <script src="~/Content/js/tooltip.js"></script>
+    <script src="~/Content/js/bootstrap.min.js"></script>
+    <script src="~/Content/js/jquery.nicescroll.min.js"></script>
+    <script src="~/Content/js/moment.min.js"></script>
+    <script src="~/Content/js/stisla.js"></script>
+
+    <!-- JS Libraries -->
+    <script src="~/Content/js/jquery.pwstrength.min.js"></script>
+    <script src="~/Content/js/jquery.selectric.min.js"></script>
+
+    <!-- Page Specific JS File -->
+    <script src="~/Content/js/auth-register.js"></script>
+
+    <!-- Template JS File -->
+    <script src="~/Content/js/scripts.js"></script>
+    <script src="~/Content/js/custom.js"></script>
+
+    @if (ViewData["Mensaje"] != null)
+    {
+        <script>
+
+        Swal.fire({
+            icon: '@(ViewData["TipoMensaje"] == "success" ? "success" : "error")',
+            title: '@(ViewData["TipoMensaje"] == "success" ? "Éxito" : "Error")',
+            text: '@Html.Raw(Json.Encode(ViewData["Mensaje"]))',
+            showConfirmButton: false,
+            timer: 5000
+        });
+        </script>
+    }
+</body>
+</html>

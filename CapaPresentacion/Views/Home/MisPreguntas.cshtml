@@ -1,0 +1,65 @@
+﻿<main class="mt-3">
+    <section class="search-section">
+        <div class="container mt-6">
+            <h3 class="text-center mb-4">Mis preguntas</h3>
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="input-group">
+                        <input id="searchInput" type="text" class="form-control" placeholder="Buscar..." aria-label="Buscar...">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="question-section mt-5">
+        <div class="container">
+            <div class="row text-center">
+                @foreach (var misPreguntas in Model)
+                {
+                    <div class="col-md-4 mb-4 question-card" data-title="@misPreguntas.Titulo" data-id="@misPreguntas.PreguntaID">
+                        <div class="card d-flex flex-row align-items-center p-4">
+                            <div class="card-body">
+                                <h5 class="fw-bold">@misPreguntas.Titulo</h5>
+                                <input type="hidden" id="PreguntaID_@misPreguntas.PreguntaID" value="@misPreguntas.PreguntaID" />
+                                <p>
+                                    Estado: <span id="estado_@misPreguntas.PreguntaID">
+                                        @(misPreguntas.Estado ? "Activa" : "Inactiva")
+                                    </span>
+                                </p>
+                                <p>
+                                    Fecha de creación: <span class="text-muted">@misPreguntas.FechaCreacion.ToString("dd 'de' MMMM 'de' yyyy h:mm tt")</span>
+                                </p>
+                                <div class="d-flex justify-content-between">
+                                    <a href="@Url.Action("Responder", "Respuesta", new { PreguntaID = misPreguntas.PreguntaID })" class="btn btn-primary">@misPreguntas.CantidadRespuestas respuestas</a>
+                                    <button class="btn @(misPreguntas.Estado ? "btn-secondary" : "btn-primary")"
+                                            onclick="toggleEstado(@misPreguntas.PreguntaID, @misPreguntas.Estado)">
+                                        @(misPreguntas.Estado ? "Desactivar" : "Activar")
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+</main>
+
+<script>
+    document.getElementById("searchInput").addEventListener("keyup", function () {
+        var query = this.value.toLowerCase();  
+
+        var preguntas = document.querySelectorAll(".question-card");  
+
+        preguntas.forEach(function (pregunta) {
+            var titulo = pregunta.getAttribute("data-title").toLowerCase();  
+
+            if (titulo.indexOf(query) > -1) {
+                pregunta.style.display = "block";
+            } else {
+                pregunta.style.display = "none";
+            }
+        });
+    });
+</script>
