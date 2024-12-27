@@ -10,6 +10,7 @@ using System.Web;
 using System.Web.Mvc;
 using CapaPresentacion.utils;
 using System.Web.UI.WebControls;
+using System.Text.RegularExpressions;
 
 namespace CapaPresentacion.Controllers
 {
@@ -23,7 +24,8 @@ namespace CapaPresentacion.Controllers
             return View();
         }
 
-        public ActionResult Registrar() {
+        public ActionResult Registrar()
+        {
             return View();
         }
 
@@ -35,6 +37,27 @@ namespace CapaPresentacion.Controllers
                 ViewData["Mensaje"] = "Las contraseñas no coinciden";
                 ViewData["TipoMensaje"] = "error";
                 return View();
+            }
+
+            if (oUsuario.Clave.Length < 6)
+            {
+                ViewData["Mensaje"] = "La contraseña debe tener al menos 6 caracteres";
+                ViewData["TipoMensaje"] = "error";
+                return View(oUsuario);
+            }
+
+            if (Evitar(oUsuario.Clave))
+            {
+                ViewData["Mensaje"] = "La contraseña contiene caracteres no permitidos";
+                ViewData["TipoMensaje"] = "error";
+                return View(oUsuario);
+            }
+
+            if (Evitar(oUsuario.NombreUsuario))
+            {
+                ViewData["Mensaje"] = "El nombre del usuario contiene caracteres no permitidos";
+                ViewData["TipoMensaje"] = "error";
+                return View(oUsuario);
             }
 
             string mensaje;
@@ -55,14 +78,14 @@ namespace CapaPresentacion.Controllers
                     Direction = ParameterDirection.Output
                 };
 
-                    
+
                 db.Database.ExecuteSqlCommand(
                     "EXEC sp_RegistrarUsuario @NombreUsuario, @Clave, @Registro OUTPUT, @Mensaje OUTPUT",
                     nombreUsuarioParam, claveParam, registroParam, mensajeParam);
- 
+
                 registrado = Convert.ToBoolean(registroParam.Value);
                 mensaje = mensajeParam.Value.ToString();
-                
+
             }
             catch (Exception ex)
             {
@@ -88,6 +111,19 @@ namespace CapaPresentacion.Controllers
         [HttpPost]
         public ActionResult Login(Usuario oUsuario)
         {
+            if (Evitar(oUsuario.Clave))
+            {
+                ViewData["Mensaje"] = "La contraseña contiene caracteres no permitidos";
+                ViewData["TipoMensaje"] = "error";
+                return View(oUsuario);
+            }
+
+            if (Evitar(oUsuario.NombreUsuario))
+            {
+                ViewData["Mensaje"] = "El nombre del usuario contiene caracteres no permitidos";
+                ViewData["TipoMensaje"] = "error";
+                return View(oUsuario);
+            }
 
             oUsuario.Clave = Encriptador.ConvertirSha256(oUsuario.Clave);
 
@@ -109,6 +145,13 @@ namespace CapaPresentacion.Controllers
             }
 
             return View();
+        }
+
+        public bool Evitar(string input)
+        {
+
+            string patron = @"[';<>\-]";
+            return Regex.IsMatch(input, patron);
         }
     }
 }
